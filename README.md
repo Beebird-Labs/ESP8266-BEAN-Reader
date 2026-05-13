@@ -2,7 +2,7 @@
 
 # ESP8266 Toyota BEAN Bus Reader (TX via ESP-NOW)
 
-Reads Toyota BEAN (Body Electronics Area Network) bus messages on an ESP8266 (NodeMCU v2) and forwards headlight status to an ESP32-C6 over ESP-NOW.
+Reads Toyota BEAN (Body Electronics Area Network) bus messages on an ESP8266 (e.g., Wemos D1 Mini) and forwards headlight status to an ESP-NOW listener.
 
 ## What It Does
 
@@ -11,21 +11,23 @@ The BEAN bus carries body control data at 10 kbps over a single-wire half-duplex
 1. Captures edge transitions on the BEAN RX pin using a hardware interrupt.
 2. Decodes the raw pulse stream: noise filtering, start-of-frame detection, bit destuffing, byte packing.
 3. Validates each frame against the Toyota CRC-8 table.
-4. Filters for a specific ECU (DID `0xFE` / SID `0x7F`) and extracts the headlight status bit.
+4. I wanted to listen to for the signal that indicated headlight on/off, so the current code filter for a specific ECU (DID `0xFE` / SID `0x7F`) and extracts the headlight status bit. 
 5. Transmits a compact binary `LightPacket` to a paired ESP32-C6 via ESP-NOW.
+
+***You could easily listen for whatever message(s) you are interested in and send those. I would caution about forwarding everything. BEAN is pretty chatty.***
 
 ## Hardware
 
-| Signal  | ESP8266 Pin | NodeMCU Label |
-| ------- | ----------- | ------------- |
-| BEAN RX | GPIO5       | D1            |
+| Signal  | ESP8266 Pin | Wemos D1 Mini Label |
+| ------- | ----------- | ------------------- |
+| BEAN RX | GPIO5       | D1                  |
 
 A signal conditioning circuit (e.g. LM393 comparator) is required to level-shift the 5 V BEAN bus signal down to 3.3 V logic. Set `INVERT_SIGNAL = true` if the comparator inverts the signal (typical open-collector configuration).
 
 ## Software
 
 - **Framework:** Arduino (via PlatformIO)
-- **Board:** NodeMCU v2 (`nodemcuv2`)
+- **Board:** Wemod D1 Mini (`d1_mini`)
 - **Platform:** `espressif8266`
 - **Libraries:** `ESP8266WiFi`, `espnow` (bundled with the ESP8266 Arduino core)
 
