@@ -1,3 +1,5 @@
+(https://github.com/github/docs/actions/workflows/main.yml/badge.svg?event=push)
+
 # ESP8266 Toyota BEAN Bus Reader (TX via ESP-NOW)
 
 Reads Toyota BEAN (Body Electronics Area Network) bus messages on an ESP8266 (NodeMCU v2) and forwards headlight status to an ESP32-C6 over ESP-NOW.
