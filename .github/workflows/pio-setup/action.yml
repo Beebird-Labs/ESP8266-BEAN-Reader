@@ -3,17 +3,14 @@ description: 'Shared steps to prepare the environment'
 runs:
   using: "composite"
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-
     - name: Cache PlatformIO
-      uses: actions/cache@v5
+      uses: actions/cache@v4
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
 
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
