@@ -605,7 +605,9 @@ void loop()
     {
         pending_light_update = false;
         last_sync_time = current_ms;
-        strcpy(myData.type, current_light_state ? "LT,1" : "LT,0");
-        esp_now_send(receiverAddress, (uint8_t *)&myData, sizeof(myData));
+        LightPacket pkt;
+        pkt.type = 'L';
+        pkt.on = current_light_state ? 1 : 0;
+        esp_now_send(receiverAddress, (uint8_t *)&pkt, sizeof(pkt));
     }
 }
