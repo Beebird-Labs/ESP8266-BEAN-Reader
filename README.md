@@ -33,7 +33,7 @@ All tuneable constants are at the top of [`src/main.cpp`](src/main.cpp):
 
 | Constant               | Default                           | Description                                  |
 | ---------------------- | --------------------------------- | -------------------------------------------- |
-| `receiverAddress`      | `{0x98,0x88,0xE0,0x76,0x93,0xEC}` | MAC address of the target ESP32-C6           |
+| `receiverAddress`      | `{0xXX,0xXX,0xXX,0xXX,0xXX,0xXX}` | MAC address of the target ESP32-C6           |
 | `BEAN_RX_PIN`          | `5`                               | GPIO pin connected to the BEAN bus signal    |
 | `INVERT_SIGNAL`        | `true`                            | Set `false` if your circuit does not invert  |
 | `TARGET_ECU_DID`       | `0xFE`                            | Device ID to filter for                      |
