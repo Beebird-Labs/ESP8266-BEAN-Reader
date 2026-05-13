@@ -8,7 +8,8 @@
 // REPLACE WITH THE ACTUAL MAC ADDRESS OF YOUR ESP32-C6
 uint8_t receiverAddress[] = {0x98, 0x88, 0xE0, 0x76, 0x93, 0xEC};
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     uint8_t type; // 'L' (0x4C)
     uint8_t on;   // 0 = off, 1 = on
 } LightPacket;
@@ -604,9 +605,7 @@ void loop()
     {
         pending_light_update = false;
         last_sync_time = current_ms;
-        LightPacket pkt;
-        pkt.type = 'L';
-        pkt.on = current_light_state ? 1 : 0;
-        esp_now_send(receiverAddress, (uint8_t *)&pkt, sizeof(pkt));
+        strcpy(myData.type, current_light_state ? "LT,1" : "LT,0");
+        esp_now_send(receiverAddress, (uint8_t *)&myData, sizeof(myData));
     }
 }
