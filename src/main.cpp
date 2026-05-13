@@ -8,14 +8,10 @@
 // REPLACE WITH THE ACTUAL MAC ADDRESS OF YOUR ESP32-C6
 uint8_t receiverAddress[] = {0x98, 0x88, 0xE0, 0x76, 0x93, 0xEC};
 
-// Data payload structure we will send to the speedometer
-// Only the text payload is used for simple test mode messages
-typedef struct
-{
-    char type[10];
-} struct_message;
-
-struct_message myData;
+typedef struct __attribute__((packed)) {
+    uint8_t type; // 'L' (0x4C)
+    uint8_t on;   // 0 = off, 1 = on
+} LightPacket;
 
 // ============================================================================
 // BEAN Protocol Configuration
@@ -111,11 +107,13 @@ uint32_t last_sync_time = 0;
 // ============================================================================
 void sendTestMessage(bool lights_on)
 {
-    strcpy(myData.type, lights_on ? "LT,1" : "LT,0");
-    esp_now_send(receiverAddress, (uint8_t *)&myData, sizeof(myData));
+    LightPacket pkt;
+    pkt.type = 'L';
+    pkt.on = lights_on ? 1 : 0;
+    esp_now_send(receiverAddress, (uint8_t *)&pkt, sizeof(pkt));
     if (LOGGING_MODE_ENABLED)
     {
-        Serial.printf("TEST MODE: Transmitting %s\n", myData.type);
+        Serial.printf("TEST MODE: Transmitting lights %s\n", lights_on ? "ON" : "OFF");
     }
 }
 
@@ -554,8 +552,10 @@ void loop()
         if (pending_light_update)
         {
             pending_light_update = false;
-            strcpy(myData.type, current_light_state ? "LT,1" : "LT,0");
-            esp_now_send(receiverAddress, (uint8_t *)&myData, sizeof(myData));
+            LightPacket pkt;
+            pkt.type = 'L';
+            pkt.on = current_light_state ? 1 : 0;
+            esp_now_send(receiverAddress, (uint8_t *)&pkt, sizeof(pkt));
         }
 
         delay(10); // Minimal delay to prevent watchdog issues
@@ -604,7 +604,9 @@ void loop()
     {
         pending_light_update = false;
         last_sync_time = current_ms;
-        strcpy(myData.type, current_light_state ? "LT,1" : "LT,0");
-        esp_now_send(receiverAddress, (uint8_t *)&myData, sizeof(myData));
+        LightPacket pkt;
+        pkt.type = 'L';
+        pkt.on = current_light_state ? 1 : 0;
+        esp_now_send(receiverAddress, (uint8_t *)&pkt, sizeof(pkt));
     }
 }
