@@ -1,4 +1,4 @@
-(https://github.com/github/docs/actions/workflows/main.yml/badge.svg?event=push)
+[![PlatformIO CI & Release](https://github.com/cstoffel/ESP8266-BEAN-RX-TX/actions/workflows/main.yml/badge.svg)](https://github.com/cstoffel/ESP8266-BEAN-RX-TX/actions/workflows/main.yml)
 
 # ESP8266 Toyota BEAN Bus Reader (TX via ESP-NOW)
 
