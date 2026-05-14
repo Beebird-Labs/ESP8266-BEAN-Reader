@@ -11,10 +11,10 @@ The BEAN bus carries body control data at 10 kbps over a single-wire half-duplex
 1. Captures edge transitions on the BEAN RX pin using a hardware interrupt.
 2. Decodes the raw pulse stream: noise filtering, start-of-frame detection, bit destuffing, byte packing.
 3. Validates each frame against the Toyota CRC-8 table.
-4. I wanted to listen to for the signal that indicated headlight on/off, so the current code filter for a specific ECU (DID `0xFE` / SID `0x7F`) and extracts the headlight status bit. 
+4. I wanted to listen to for the signal that indicated headlight on/off, so the current code filter for a specific ECU (DID `0xFE` / SID `0x7F`) and extracts the headlight status bit.
 5. Transmits a compact binary `LightPacket` to a paired ESP32-C6 via ESP-NOW.
 
-***You could easily listen for whatever message(s) you are interested in and send those. I would caution about forwarding everything. BEAN is pretty chatty.***
+**_You could easily listen for whatever message(s) you are interested in and send those. I would caution about forwarding everything. BEAN is pretty chatty._**
 
 ## Hardware
 
@@ -82,6 +82,15 @@ LightPacket (packed, 2 bytes) {
     uint8_t on;    // 1 = lights on, 0 = lights off
 }
 ```
+
+Packets are sent:
+
+- **On state change** — immediately when the headlight bit transitions on/off.
+- **Periodic sync** — every 500 ms regardless of state change, so the receiver stays in sync if it reboots or misses a packet.
+
+## Radio Watchdog
+
+If no ESP-NOW delivery acknowledgement is received for 10 seconds, the firmware prints `Watchdog: radio hang detected, rebooting.` and calls `ESP.restart()`. This recovers from a hung radio stack without requiring physical intervention.
 
 ## CI / CD
 

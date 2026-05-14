@@ -103,6 +103,9 @@ bool test_lights_state = true; // Start with lights ON
 
 uint32_t last_sync_time = 0;
 
+static uint32_t s_last_send_ok_ms = 0;
+static const uint32_t RADIO_WATCHDOG_MS = 10000;
+
 // ============================================================================
 // Hardware ISR (Pin Change Interrupt)
 // ============================================================================
@@ -151,9 +154,10 @@ void ICACHE_RAM_ATTR handleEdge()
 // ============================================================================
 void onDataSent(uint8_t *mac_addr, uint8_t sendStatus)
 {
-    if (!LOGGING_MODE_ENABLED)
-        return;
-    Serial.println(sendStatus == 0 ? "ESP-NOW Delivery Success" : "ESP-NOW Delivery Fail");
+    if (sendStatus == 0)
+        s_last_send_ok_ms = millis();
+    if (LOGGING_MODE_ENABLED)
+        Serial.println(sendStatus == 0 ? "ESP-NOW Delivery Success" : "ESP-NOW Delivery Fail");
 }
 
 // ============================================================================
@@ -188,6 +192,8 @@ void setup()
 
     // Arm the hardware interrupt tracker
     attachInterrupt(digitalPinToInterrupt(BEAN_RX_PIN), handleEdge, CHANGE);
+
+    s_last_send_ok_ms = millis();
 }
 
 int message_count = 0;
@@ -609,5 +615,12 @@ void loop()
         pkt.type = 'L';
         pkt.on = current_light_state ? 1 : 0;
         esp_now_send(receiverAddress, (uint8_t *)&pkt, sizeof(pkt));
+    }
+
+    if (millis() - s_last_send_ok_ms > RADIO_WATCHDOG_MS)
+    {
+        Serial.println("Watchdog: radio hang detected, rebooting.");
+        delay(100);
+        ESP.restart();
     }
 }
