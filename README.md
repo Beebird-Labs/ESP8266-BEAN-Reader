@@ -1,7 +1,5 @@
 [![PlatformIO CI & Release](https://github.com/cstoffel/ESP8266-BEAN-RX-TX/actions/workflows/main.yml/badge.svg)](https://github.com/cstoffel/ESP8266-BEAN-RX-TX/actions/workflows/main.yml)
 
-[<img src="https://buymeacoffee.com" alt="Buy Me A Coffee" height="41" width="174">](https://buymeacoffee.com/beebirdlabs)
-
 # ESP8266 Toyota BEAN Reader
 
 Reads Toyota BEAN (Body Electronics Area Network) bus messages on an ESP8266 (e.g., Wemos D1 Mini) and forwards headlight status to an ESP-NOW listener.
