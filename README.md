@@ -37,13 +37,15 @@ All tuneable constants are at the top of [`src/main.cpp`](src/main.cpp):
 
 | Constant               | Default                           | Description                                  |
 | ---------------------- | --------------------------------- | -------------------------------------------- |
-| `receiverAddress`      | `{0xXX,0xXX,0xXX,0xXX,0xXX,0xXX}` | MAC address of the target ESP32-C6           |
+| `receiverAddress`      | `{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}` | MAC address of the target ESP32-C6.          |
 | `BEAN_RX_PIN`          | `5`                               | GPIO pin connected to the BEAN bus signal    |
 | `INVERT_SIGNAL`        | `true`                            | Set `false` if your circuit does not invert  |
 | `TARGET_ECU_DID`       | `0xFE`                            | Device ID to filter for                      |
 | `TARGET_ECU_SID`       | `0x7F`                            | Service ID to filter for                     |
 | `LIGHT_STATUS_BITMASK` | `0x08`                            | Bitmask for the headlight bit in the payload |
 | `LIGHT_PAYLOAD_BYTE`   | `0`                               | Payload byte index containing light status   |
+
+**NOTE:** `{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}` will broadcast to all receivers. Replace these values from your receive if you want to target a single device. 
 
 ## Build & Flash
 
