@@ -45,7 +45,7 @@ All tuneable constants are at the top of [`src/main.cpp`](src/main.cpp):
 | `LIGHT_STATUS_BITMASK` | `0x08`                            | Bitmask for the headlight bit in the payload |
 | `LIGHT_PAYLOAD_BYTE`   | `0`                               | Payload byte index containing light status   |
 
-**NOTE:** `{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}` will broadcast to all receivers. Replace these values from your receive if you want to target a single device. 
+**NOTE:** `{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}` will broadcast to all receivers. If you want to target a single device, you must these values with the MAC addresss from that device. 
 
 ## Build & Flash
 
