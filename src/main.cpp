@@ -6,7 +6,7 @@
 // ESP-NOW Configuration
 // ============================================================================
 // REPLACE WITH THE ACTUAL MAC ADDRESS OF YOUR ESP32-C6
-uint8_t receiverAddress[] = {0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX};
+uint8_t receiverAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 typedef struct __attribute__((packed))
 {
