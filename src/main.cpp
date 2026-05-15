@@ -6,7 +6,7 @@
 // ESP-NOW Configuration
 // ============================================================================
 // REPLACE WITH THE ACTUAL MAC ADDRESS OF YOUR ESP32-C6
-uint8_t receiverAddress[] = {0x98, 0x88, 0xE0, 0x76, 0x93, 0xEC};
+uint8_t receiverAddress[] = {0xXX, 0xXX, 0xXX, 0xXX, 0xXX, 0xXX};
 
 typedef struct __attribute__((packed))
 {
@@ -17,7 +17,7 @@ typedef struct __attribute__((packed))
 // ============================================================================
 // BEAN Protocol Configuration
 // ============================================================================
-const int BEAN_RX_PIN = 5;       // GPIO5 (D1 on NodeMCU/Wemos)
+const int BEAN_RX_PIN = 5;       // GPIO5 (D1 on Wemos)
 const bool INVERT_SIGNAL = true; // Set to true if your LM393 circuit inverts
 
 // Message filters (from your ESP32-C6 settings)
